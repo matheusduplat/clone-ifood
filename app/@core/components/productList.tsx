@@ -13,7 +13,7 @@ interface Props {
   }>[];
 }
 
-export async function ProductList({ products }: Props) {
+export function ProductList({ products }: Props) {
   return (
     <div className="flex gap-4 overflow-x-scroll px-5 [&::-webkit-scrollbar]:hidden ">
       {products.map((product) => (
