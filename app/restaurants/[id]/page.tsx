@@ -2,6 +2,7 @@ import { db } from "@/app/@core/lib/prisma";
 import { notFound } from "next/navigation";
 import { RestaurantImage } from "./component/restaurantImage";
 import RestaurantInfo from "./component/restaurantInfo";
+import { CartBanner } from "./component/cartBanner";
 
 interface Props {
   params: {
@@ -53,6 +54,7 @@ export default async function RestaurantPage({ params: { id } }: Props) {
     <div>
       <RestaurantImage restaurant={restaurant} />
       <RestaurantInfo restaurant={restaurant} />
+      <CartBanner restaurant={restaurant} />
     </div>
   );
 }
