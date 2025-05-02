@@ -9,6 +9,8 @@ type ProductWithRestaurant = Prisma.ProductGetPayload<{
     restaurant: {
       select: {
         deliveryFee: true;
+        id: true;
+        deliveryTimeMinutes: true;
       };
     };
   };
@@ -17,7 +19,7 @@ type ProductWithRestaurant = Prisma.ProductGetPayload<{
 interface AddProductToCartProps {
   product: ProductWithRestaurant;
   quantity: number;
-  emptyCart: boolean;
+  emptyCart?: boolean;
 }
 export interface CartProduct extends ProductWithRestaurant {
   quantity: number;
@@ -37,6 +39,7 @@ interface ICartContext {
   decreaseProductQuantity: (productId: string) => void;
   increaseProductQuantity: (productId: string) => void;
   removeProductFromCart: (productId: string) => void;
+  clearCart: () => void;
 }
 
 interface Props {
@@ -52,6 +55,7 @@ export const CartContext = createContext<ICartContext>({
   decreaseProductQuantity: () => {},
   increaseProductQuantity: () => {},
   removeProductFromCart: () => {},
+  clearCart: () => {},
 });
 
 export const CartProvider = ({ children }: Props) => {
@@ -79,6 +83,10 @@ export const CartProvider = ({ children }: Props) => {
 
   const totalDiscounts =
     subtotalPrice - totalPrice + Number(products?.[0]?.restaurant.deliveryFee);
+
+  const clearCart = () => {
+    setProducts([]);
+  };
 
   const decreaseProductQuantity = (productId: string) => {
     setProducts((prevProducts) => {
@@ -159,6 +167,7 @@ export const CartProvider = ({ children }: Props) => {
         totalPrice,
         totalDiscounts,
         totalQuantity,
+        clearCart,
       }}
     >
       {children}
